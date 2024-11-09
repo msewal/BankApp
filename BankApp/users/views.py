@@ -1,18 +1,33 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        if form.is_valid():  # Formun geçerliliğini kontrol et
-            user = form.save()  # Kullanıcıyı kaydet
+        if form.is_valid():
+            form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            # Kullanıcıyı otomatik olarak giriş yap
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('home')  # Kayıttan sonra ana sayfaya yönlendir
+            return redirect('hesap_list')  
     else:
-        form = RegisterForm()  # GET isteğinde formu oluştur
-    return render(request, 'register.html', {'form': form})  # Şablonu render et
+        form = RegisterForm()
+    return render(request, 'users/register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('hesap_list')  
+    else:
+        form = AuthenticationForm()
+    return render(request, 'users/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  

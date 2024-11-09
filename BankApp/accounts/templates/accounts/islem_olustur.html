@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Yeni İşlem{% endblock %}
+
+{% block content %}
+    <h2>Yeni İşlem</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">İşlem Oluştur</button>
+    </form>
+    <a href="{% url 'hesap_list' %}">Hesapları Görüntüle</a>
+{% endblock %}

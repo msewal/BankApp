@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Hesaplarım{% endblock %}
+
+{% block content %}
+    <h2>Hesaplarım</h2>
+    <ul>
+        {% for hesap in hesaplar %}
+            <li>
+                Hesap Numarası: {{ hesap.hesap_numarasi }} - Bakiye: {{ hesap.bakiye }}
+                <a href="{% url 'islem_olustur' hesap.id %}">Yeni İşlem Yap</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'logout' %}">Çıkış Yap</a>
+{% endblock %}
